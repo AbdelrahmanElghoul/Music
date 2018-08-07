@@ -39,7 +39,7 @@ public class Player {
             btnPlay();
         audioname.setText( SetAudioName( this.mediaPath.get( index  ) ) );
         PlayList( );
-
+seekBar.setMax( mediaPlayer.getDuration() );
 
          playing=true;
 

@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         previous=findViewById( R.id.btnPrevious );
         audioname=findViewById( R.id.audioName );
         seekBar=findViewById( R.id.SeekBar );
+
+
         Directory();
     }
 

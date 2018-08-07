@@ -97,6 +97,7 @@ previous.setOnClickListener( new View.OnClickListener() {
        player.btnPrevious();
     }
 } );
+
 seekBar.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener() {
 
 
@@ -105,10 +106,10 @@ seekBar.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener() {
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
         if(Player.playing) {
-            Double value= ((double) i)/100;
-            Player.mediaPlayer.seekTo( (int) (value*Player.mediaPlayer.getDuration()) );//Value working  but seek into 0
-            //Look FOr external Library "ExoPlayer"
-            Log.e("Seek To", String.valueOf( (int) (value* Player.mediaPlayer.getDuration()) ) );
+
+
+            Player.mediaPlayer.seekTo(i);//Value working  but seek into 0
+
             Log.e("Duration", String.valueOf( Player.mediaPlayer.getDuration() ) );
             Log.e("SeekBar", String.valueOf( i ) );
 
