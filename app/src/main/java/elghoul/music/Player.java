@@ -12,7 +12,7 @@ import android.widget.Toast;
 import java.util.List;
 
 
-
+//not Used
 public class Player {
 
     private List<String> mediaPath;
@@ -34,14 +34,17 @@ public class Player {
         this.index=index;
         this.audioname=audioname;
         this.seekBar=seekBar;
-
+/*
          mediaPlayer=MediaPlayer.create(context, Uri.parse( this.mediaPath.get( index  )) );
             btnPlay();
         audioname.setText( SetAudioName( this.mediaPath.get( index  ) ) );
         PlayList( );
 seekBar.setMax( mediaPlayer.getDuration() );
 
-         playing=true;
+         playing=true;*/
+
+       // elghoul.music.MediaPlayer mediaPlayer=new elghoul.music.MediaPlayer( mediaPath,context );
+
 
     }
 
