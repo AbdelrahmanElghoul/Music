@@ -68,18 +68,19 @@ public  class myMediaPlayer implements ExoPlayer.EventListener{
 
 
     private void InsializingExoPlayer(){
-        Log.e( "Plyaer","Playing" );
+
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory( bandwidthMeter );
         TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
         exoPlayer= ExoPlayerFactory.newSimpleInstance(  context,trackSelector,new DefaultLoadControl(  ) );
-        Toast.makeText( context, "Index "+index+"\n"+mediaPath.get( index ), Toast.LENGTH_SHORT ).show();
-
+        btnPlay();
         exoPlayer.addListener( this );
         exoPlayer.prepare(settingMedia( index ));
         exoPlayer.setPlayWhenReady(true);// to play video when ready. Use false to pause a video
         audioname.setText( SetAudioName( this.mediaPath.get( index  ) ) );
+        PlayCycle();
+
 
 
         //PlayList();
@@ -116,16 +117,35 @@ private void PlayList(){
     }
 
     public  void btnPlay(){
-        if(exoPlayer.isPlayingAd()){
-            exoPlayer.setPlayWhenReady( false );
-            pause.setImageResource(  R.drawable.play );
+        exoPlayer.setPlayWhenReady(!exoPlayer.getPlayWhenReady());
+        if(exoPlayer.getPlayWhenReady()){
+          pause.setImageResource(  R.drawable.pause );
+          PlayCycle();
         }
         else{
-            exoPlayer.setPlayWhenReady( false );
-            pause.setImageResource( R.drawable.pause );
+          pause.setImageResource( R.drawable.play );
         }
 
     }
+
+    void PlayCycle(){
+        Log.e("Player",String.valueOf( exoPlayer.getPlayWhenReady() ));
+        seekBar.setProgress( (int) exoPlayer.getCurrentPosition() );
+        Log.e( "Position", String.valueOf( exoPlayer.getCurrentPosition() ) );
+        Log.e("Progress", String.valueOf( seekBar.getProgress() ) );
+        Log.e("Duration", String.valueOf( exoPlayer.getDuration() ) );
+
+        if(exoPlayer.getPlayWhenReady()){
+            new Runnable() {
+                @Override
+                public void run() {
+                    PlayCycle();
+                    Log.e( "Recursive","Worked" );
+                }
+            };
+        }
+    }
+
 
     public void btnPrevious(){
         exoPlayer.release();

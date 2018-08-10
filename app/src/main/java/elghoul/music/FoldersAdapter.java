@@ -29,7 +29,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.FolderVi
     private ImageButton play,next,previous;
     TextView audioname;
     private SeekBar seekBar;
-   myMediaPlayer player;
+    myMediaPlayer player;
     private int j=0;
 
     FoldersAdapter(Context context, List<AudioFile> audioFile, ImageButton play, ImageButton next, ImageButton previous, TextView audioname, SeekBar  seekBar) {
@@ -133,6 +133,8 @@ seekBar.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener() {
     public int getItemCount() {
        return audioFile.size();
     }
+
+
 
     class FolderViewHolder extends RecyclerView.ViewHolder{
 
