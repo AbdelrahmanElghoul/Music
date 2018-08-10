@@ -86,7 +86,7 @@ public  class myMediaPlayer implements ExoPlayer.EventListener{
 
     }
 
-MediaSource settingMedia(int i){
+private MediaSource settingMedia(int i){
 
     DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context , Util.getUserAgent(context, String.valueOf( R.string.app_name ) ));
     ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
@@ -94,13 +94,13 @@ MediaSource settingMedia(int i){
 
 }
 
-void PlayList(){
-        exoPlayer.prepare( settingMedia((++index)%mediaPath.size() ));
+private void PlayList(){
+    /*    exoPlayer.prepare( settingMedia((++index)%mediaPath.size() ));
         if(exoPlayer.getCurrentPosition()==exoPlayer.getDuration()){
             exoPlayer.setPlayWhenReady( true );
             audioname.setText( SetAudioName( this.mediaPath.get( index  ) ) );
         }
-
+*/
 }
 
     public void btnNext(){
