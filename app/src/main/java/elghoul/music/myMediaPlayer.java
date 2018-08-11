@@ -1,485 +1,125 @@
 package elghoul.music;
 
-
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Looper;
-import android.support.annotation.Nullable;
-import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.PlaybackParameters;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.PlayerMessage;
-import com.google.android.exoplayer2.SeekParameters;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.extractor.ExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.upstream.BandwidthMeter;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
-
 import java.util.List;
 
-public  class myMediaPlayer implements ExoPlayer.EventListener{
+
+//not Used
+public class myMediaPlayer {
 
     private List<String> mediaPath;
     private ImageButton pause;
     private Context context;
     TextView audioname;
     private SeekBar seekBar;
+
+    static MediaPlayer mediaPlayer;
     static boolean playing=false;
     private int index;
 
-  public static SimpleExoPlayer exoPlayer;
 
-    public myMediaPlayer(Context context, List<String> mediaPath, ImageButton pause, TextView audioname, SeekBar seekBar, int index) {
+
+    public myMediaPlayer( Context context,List<String> mediaPath, ImageButton pause,TextView audioname,SeekBar seekBar,int index) {
         this.mediaPath = mediaPath;
         this.pause = pause;
         this.context = context;
-        this.audioname = audioname;
-        this.seekBar = seekBar;
-        this.index = index;
-
-        InsializingExoPlayer();
-        playing=true;
-        seekBar.setMax( (int) exoPlayer.getDuration() );
-    }
-
-
-
-    private void InsializingExoPlayer(){
-
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory( bandwidthMeter );
-        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-
-        exoPlayer= ExoPlayerFactory.newSimpleInstance(  context,trackSelector,new DefaultLoadControl(  ) );
-        btnPlay();
-        exoPlayer.addListener( this );
-        exoPlayer.prepare(settingMedia( index ));
-        exoPlayer.setPlayWhenReady(true);// to play video when ready. Use false to pause a video
+        this.index=index;
+        this.audioname=audioname;
+        this.seekBar=seekBar;
+/*
+         mediaPlayer=MediaPlayer.create(context, Uri.parse( this.mediaPath.get( index  )) );
+            btnPlay();
         audioname.setText( SetAudioName( this.mediaPath.get( index  ) ) );
-        PlayCycle();
+        PlayList( );
+seekBar.setMax( mediaPlayer.getDuration() );
 
+         playing=true;*/
 
+       // elghoul.music.MediaPlayer mediaPlayer=new elghoul.music.MediaPlayer( mediaPath,context );
 
-        //PlayList();
 
     }
 
-private MediaSource settingMedia(int i){
+    public void setSeekBar(){
 
-    DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context , Util.getUserAgent(context, String.valueOf( R.string.app_name ) ));
-    ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-    return new ExtractorMediaSource( Uri.parse(mediaPath.get( i )),dataSourceFactory,extractorsFactory,null,null,null);
+seekBar.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener() {
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+        Toast.makeText( context,String.valueOf( i ),Toast.LENGTH_SHORT ).show();
+    }
 
-}
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+        mediaPlayer.seekTo( 0 );
+    }
 
-private void PlayList(){
-    /*    exoPlayer.prepare( settingMedia((++index)%mediaPath.size() ));
-        if(exoPlayer.getCurrentPosition()==exoPlayer.getDuration()){
-            exoPlayer.setPlayWhenReady( true );
-            audioname.setText( SetAudioName( this.mediaPath.get( index  ) ) );
-        }
-*/
-}
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+            PlayList();
+    }
+} );
 
+    }
     public void btnNext(){
-       exoPlayer.release();
+        mediaPlayer.release();
         if(index==mediaPath.size()-1){
             index=-1;
         }
-        exoPlayer.prepare(settingMedia( index ));
-        exoPlayer.setPlayWhenReady(true);
+        mediaPlayer= MediaPlayer.create( context, Uri.parse( mediaPath.get( ++index )  ) );
+        mediaPlayer.start();
         audioname.setText( SetAudioName( this.mediaPath.get( index  ) ) );
 
         PlayList( );
     }
 
     public  void btnPlay(){
-        exoPlayer.setPlayWhenReady(!exoPlayer.getPlayWhenReady());
-        if(exoPlayer.getPlayWhenReady()){
-          pause.setImageResource(  R.drawable.pause );
-          PlayCycle();
+        if(mediaPlayer.isPlaying()){
+            mediaPlayer.pause();
+            pause.setImageResource(  R.drawable.play );
         }
         else{
-          pause.setImageResource( R.drawable.play );
+            mediaPlayer.start();
+            pause.setImageResource( R.drawable.pause );
         }
 
     }
-
-    void PlayCycle(){
-        Log.e("Player",String.valueOf( exoPlayer.getPlayWhenReady() ));
-        seekBar.setProgress( (int) exoPlayer.getCurrentPosition() );
-        Log.e( "Position", String.valueOf( exoPlayer.getCurrentPosition() ) );
-        Log.e("Progress", String.valueOf( seekBar.getProgress() ) );
-        Log.e("Duration", String.valueOf( exoPlayer.getDuration() ) );
-
-        if(exoPlayer.getPlayWhenReady()){
-            new Runnable() {
-                @Override
-                public void run() {
-                    PlayCycle();
-                    Log.e( "Recursive","Worked" );
-                }
-            };
-        }
-    }
-
 
     public void btnPrevious(){
-        exoPlayer.release();
+
+        mediaPlayer.release();
         if(index==0){
             index=mediaPath.size();
         }
-        exoPlayer.prepare(settingMedia( index ));
-        exoPlayer.setPlayWhenReady(true);
+        mediaPlayer= MediaPlayer.create( context, Uri.parse( mediaPath.get( --index ) ) );
+        mediaPlayer.start();
         audioname.setText( SetAudioName( this.mediaPath.get( index  ) ) );
+
         PlayList(  );
 
     }
 
-    static  String SetAudioName(String name){
+    public void PlayList(){
+
+        mediaPlayer.setNextMediaPlayer( MediaPlayer.create( context,Uri.parse(mediaPath.get( ( index=((++index)%mediaPath.size() )) ) ) ));
+
+        SetAudioName( mediaPath.get( index ) );
+
+
+    }
+
+  static  String SetAudioName(String name){
         String[] arrName=name.split( "/" );
         return arrName[arrName.length-1];
-    }
-
-
-
-
-
-
-
-
-
-
-    @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-
-    }
-
-    @Override
-    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
-    }
-
-    @Override
-    public void onLoadingChanged(boolean isLoading) {
-
-    }
-
-    @Override
-    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-
-    }
-
-    @Override
-    public void onRepeatModeChanged(int repeatMode) {
-
-    }
-
-    @Override
-    public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-
-    }
-
-    @Override
-    public void onPlayerError(ExoPlaybackException error) {
-        Log.e("PlayerError",error.getMessage());
-    }
-
-    @Override
-    public void onPositionDiscontinuity(int reason) {
-
-    }
-
-    @Override
-    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-
-    }
-
-    @Override
-    public void onSeekProcessed() {
 
     }
 
 
-
-}
-
-class media implements ExoPlayer{
-    @Override
-    public Looper getPlaybackLooper() {
-        return null;
-    }
-
-    @Override
-    public void prepare(MediaSource mediaSource) {
-
-    }
-
-    @Override
-    public void prepare(MediaSource mediaSource, boolean resetPosition, boolean resetState) {
-
-    }
-
-    @Override
-    public PlayerMessage createMessage(PlayerMessage.Target target) {
-        return null;
-    }
-
-    @Override
-    public void sendMessages(ExoPlayerMessage... messages) {
-
-    }
-
-    @Override
-    public void blockingSendMessages(ExoPlayerMessage... messages) {
-
-    }
-
-    @Override
-    public void setSeekParameters(@Nullable SeekParameters seekParameters) {
-
-    }
-
-    @Nullable
-    @Override
-    public VideoComponent getVideoComponent() {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    public TextComponent getTextComponent() {
-        return null;
-    }
-
-    @Override
-    public void addListener(Player.EventListener listener) {
-
-    }
-
-    @Override
-    public void removeListener(Player.EventListener listener) {
-
-    }
-
-    @Override
-    public int getPlaybackState() {
-        return 0;
-    }
-
-    @Nullable
-    @Override
-    public ExoPlaybackException getPlaybackError() {
-        return null;
-    }
-
-    @Override
-    public void setPlayWhenReady(boolean playWhenReady) {
-
-    }
-
-    @Override
-    public boolean getPlayWhenReady() {
-        return false;
-    }
-
-    @Override
-    public void setRepeatMode(int repeatMode) {
-
-    }
-
-    @Override
-    public int getRepeatMode() {
-        return 0;
-    }
-
-    @Override
-    public void setShuffleModeEnabled(boolean shuffleModeEnabled) {
-
-    }
-
-    @Override
-    public boolean getShuffleModeEnabled() {
-        return false;
-    }
-
-    @Override
-    public boolean isLoading() {
-        return false;
-    }
-
-    @Override
-    public void seekToDefaultPosition() {
-
-    }
-
-    @Override
-    public void seekToDefaultPosition(int windowIndex) {
-
-    }
-
-    @Override
-    public void seekTo(long positionMs) {
-
-    }
-
-    @Override
-    public void seekTo(int windowIndex, long positionMs) {
-
-    }
-
-    @Override
-    public void setPlaybackParameters(@Nullable PlaybackParameters playbackParameters) {
-
-    }
-
-    @Override
-    public PlaybackParameters getPlaybackParameters() {
-        return null;
-    }
-
-    @Override
-    public void stop() {
-
-    }
-
-    @Override
-    public void stop(boolean reset) {
-
-    }
-
-    @Override
-    public void release() {
-
-    }
-
-    @Override
-    public int getRendererCount() {
-        return 0;
-    }
-
-    @Override
-    public int getRendererType(int index) {
-        return 0;
-    }
-
-    @Override
-    public TrackGroupArray getCurrentTrackGroups() {
-        return null;
-    }
-
-    @Override
-    public TrackSelectionArray getCurrentTrackSelections() {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    public Object getCurrentManifest() {
-        return null;
-    }
-
-    @Override
-    public Timeline getCurrentTimeline() {
-        return null;
-    }
-
-    @Override
-    public int getCurrentPeriodIndex() {
-        return 0;
-    }
-
-    @Override
-    public int getCurrentWindowIndex() {
-        return 0;
-    }
-
-    @Override
-    public int getNextWindowIndex() {
-        return 0;
-    }
-
-    @Override
-    public int getPreviousWindowIndex() {
-        return 0;
-    }
-
-    @Nullable
-    @Override
-    public Object getCurrentTag() {
-        return null;
-    }
-
-    @Override
-    public long getDuration() {
-        return 0;
-    }
-
-    @Override
-    public long getCurrentPosition() {
-        return 0;
-    }
-
-    @Override
-    public long getBufferedPosition() {
-        return 0;
-    }
-
-    @Override
-    public int getBufferedPercentage() {
-        return 0;
-    }
-
-    @Override
-    public boolean isCurrentWindowDynamic() {
-        return false;
-    }
-
-    @Override
-    public boolean isCurrentWindowSeekable() {
-        return false;
-    }
-
-    @Override
-    public boolean isPlayingAd() {
-        return false;
-    }
-
-    @Override
-    public int getCurrentAdGroupIndex() {
-        return 0;
-    }
-
-    @Override
-    public int getCurrentAdIndexInAdGroup() {
-        return 0;
-    }
-
-    @Override
-    public long getContentPosition() {
-        return 0;
-    }
 }

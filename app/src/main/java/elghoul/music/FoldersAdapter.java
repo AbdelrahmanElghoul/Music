@@ -29,7 +29,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.FolderVi
     private ImageButton play,next,previous;
     TextView audioname;
     private SeekBar seekBar;
-    myMediaPlayer player;
+    myExoPlayer player;
     private int j=0;
 
     FoldersAdapter(Context context, List<AudioFile> audioFile, ImageButton play, ImageButton next, ImageButton previous, TextView audioname, SeekBar  seekBar) {
@@ -56,7 +56,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.FolderVi
         holder.imageView.setImageResource( R.drawable.folder );
         holder.AudioCount.setText( String.valueOf(audioFile.get( position ).getAudioPath().size()) );
 
-        holder.Name.setText(  myMediaPlayer.SetAudioName( audioFile.get( position ).getFilePath() ));
+        holder.Name.setText(  myExoPlayer.SetAudioName( audioFile.get( position ).getFilePath() ));
 
         ArrayAdapter<String> adapter=new ArrayAdapter<>(context,android.R.layout.simple_list_item_1, new String[]{"Add to list" ,"Shuffle" ,"Remove" } );
         holder.spinner.setAdapter( adapter );
@@ -65,7 +65,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.FolderVi
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(i==1){
 
-                    player=new myMediaPlayer(    context,audioFile.get( position ).getAudioPath(),play,audioname,seekBar,0 );
+                    player=new myExoPlayer(    context,audioFile.get( position ).getAudioPath(),play,audioname,seekBar,0 );
                    play.setEnabled( true );
                    previous.setEnabled( true );
                    next.setEnabled( true );
@@ -105,21 +105,21 @@ seekBar.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener() {
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-        if(myMediaPlayer.playing) {
+        if(myExoPlayer.playing) {
 
+            myExoPlayer.exoPlayer.seekTo( i );
+            Log.e("Player" , String.valueOf( myExoPlayer.exoPlayer.getPlayWhenReady() ) );
+            Log.e( "Max", String.valueOf( seekBar.getMax() ) );
+            Log.e("Duration", String.valueOf( myExoPlayer.exoPlayer.getDuration() ) );
+            Log.e( "Seek", String.valueOf( i ) );
 
-            myMediaPlayer.exoPlayer.seekTo( i );//Value working  but seek into 0
-
-            Log.e("Duration", String.valueOf( myMediaPlayer.exoPlayer.getDuration() ) );
-            Log.e("SeekBar", String.valueOf( i ) );
-
-        }
+            }
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-        if(myMediaPlayer.playing)
-        myMediaPlayer.exoPlayer.seekTo( 0 );
+        if(myExoPlayer.playing)
+        myExoPlayer.exoPlayer.seekTo( 0 );
     }
 
     @Override
