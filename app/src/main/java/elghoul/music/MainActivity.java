@@ -1,6 +1,7 @@
 package elghoul.music;
 
 import android.media.MediaPlayer;
+import android.media.PlaybackParams;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,19 +23,24 @@ public class MainActivity extends AppCompatActivity {
     SeekBar seekBar;
     AudioData  audioData;
     RecyclerView recyclerView;
-    ImageButton pause,next,previous;
-    TextView audioname;
+    ImageButton pause,next,previous,play;
+    TextView audioname,CurrentTime,TotalTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
         recyclerView=findViewById( R.id.RecyclerView );
-        pause=findViewById( R.id.btnPlay );
+        pause=findViewById( R.id.btnPause );
         next=findViewById( R.id.btnNext );
+        play=findViewById( R.id.btnPlay );
         previous=findViewById( R.id.btnPrevious );
         audioname=findViewById( R.id.audioName );
         seekBar=findViewById( R.id.SeekBar );
+        CurrentTime=findViewById( R.id.CurrentTime );
+        TotalTime=findViewById( R.id.TotalTime );
+
+
 
 
         Directory();
@@ -64,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                   recyclerView.setLayoutManager( new LinearLayoutManager( MainActivity.this ) );
                   recyclerView.setHasFixedSize( true );
                   recyclerView.setAdapter(
-                          new FoldersAdapter( MainActivity.this,audioData.getFile(),pause,next,previous,audioname,seekBar ) );
+                          new FoldersAdapter( MainActivity.this,audioData.getFile(),pause,play,next,previous,audioname,seekBar,CurrentTime,TotalTime ) );
               }
           });
 
@@ -74,8 +80,6 @@ public class MainActivity extends AppCompatActivity {
            msg(e.getMessage());
       }
     }
-
-
 
     void msg(String message) {
         Toast.makeText( this, message, Toast.LENGTH_SHORT ).show();

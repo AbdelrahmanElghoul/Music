@@ -21,25 +21,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.Timer;
 
 public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.FolderViewHolder>{
 
+    mAudioWife mAudioWife;
     private List<AudioFile> audioFile;
     private Context context;
-    private ImageButton play,next,previous;
-    TextView audioname;
+    private ImageButton play,next,previous,pause;
+    TextView audioname,CurrentTime,TotalTime;
     private SeekBar seekBar;
     myExoPlayer player;
     private int j=0;
 
-    FoldersAdapter(Context context, List<AudioFile> audioFile, ImageButton play, ImageButton next, ImageButton previous, TextView audioname, SeekBar  seekBar) {
+    FoldersAdapter(Context context, List<AudioFile> audioFile,ImageButton pause, ImageButton play, ImageButton next, ImageButton previous, TextView audioname, SeekBar  seekBar,TextView CurrentTime,TextView TotalTime) {
         this.audioFile = audioFile;
         this.context = context;
         this.play = play;
         this.next = next;
+        this.pause=pause;
         this.previous = previous;
         this.audioname = audioname;
         this.seekBar=seekBar;
+        this.CurrentTime=CurrentTime;
+        this.TotalTime= TotalTime;
 
     }
 
@@ -49,12 +54,12 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.FolderVi
         LayoutInflater inflater=LayoutInflater.from(context);
         View view=inflater.inflate( R.layout.file,parent,false );
         return new FolderViewHolder( view );
-    };
+    }
 
     @Override
     public void onBindViewHolder(@NonNull FolderViewHolder holder, final int position) {
         holder.imageView.setImageResource( R.drawable.folder );
-        holder.AudioCount.setText( String.valueOf(audioFile.get( position ).getAudioPath().size()) );
+        holder.AudioCount.setText(String.valueOf(  audioFile.get( position ).getAudioPath().size()));
 
         holder.Name.setText(  myExoPlayer.SetAudioName( audioFile.get( position ).getFilePath() ));
 
@@ -65,12 +70,11 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.FolderVi
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(i==1){
 
-                    player=new myExoPlayer(    context,audioFile.get( position ).getAudioPath(),play,audioname,seekBar,0 );
-                   play.setEnabled( true );
-                   previous.setEnabled( true );
-                   next.setEnabled( true );
-
-                }
+                    if(elghoul.music.mAudioWife.playing){
+                        mAudioWife.audioWife.release();
+                    }
+                  mAudioWife= new mAudioWife(audioFile.get( position ).getAudioPath(),context,pause,play,next,previous,audioname,seekBar,0,CurrentTime,TotalTime);
+                  }
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -78,7 +82,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.FolderVi
             }
         } );
 
-
+/*
 play.setOnClickListener( new View.OnClickListener() {
     @Override
     public void onClick(View view) {
@@ -126,7 +130,7 @@ seekBar.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener() {
     public void onStopTrackingTouch(SeekBar seekBar) {
         player.btnNext();
     }
-} );
+} );*/
     }
 
     @Override

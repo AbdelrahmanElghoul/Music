@@ -34,6 +34,8 @@
         implementation 'com.google.android.exoplayer:exoplayer-core:2.8.2'
         implementation 'com.google.android.exoplayer:exoplayer:r2.4.2'
 
+        implementation 'net.the4thdimension:audio-wife:1.0.3'
+
 
 
 

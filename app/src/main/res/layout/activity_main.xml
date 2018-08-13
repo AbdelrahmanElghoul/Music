@@ -22,7 +22,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/Relative"
-        android:background="#e3f5f6" />
+        android:layout_toStartOf="@id/TotalTime"
+        android:layout_toEndOf="@id/CurrentTime"
+        android:background="#eefff0" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="00:00"
+        android:id="@+id/CurrentTime"
+        android:layout_above="@id/Relative"
+        android:layout_alignParentStart="true"
+       />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="00:00"
+        android:id="@+id/TotalTime"
+        android:layout_above="@id/Relative"
+        android:layout_alignParentEnd="true"
+        />
    <RelativeLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
@@ -59,7 +77,32 @@
            android:src="@drawable/play"
            android:background="@null"
            android:scaleType="fitCenter"
+           android:visibility="invisible"
            android:id="@+id/btnPlay"
+           android:clickable="false"
+           android:layout_toStartOf="@id/btnNext"
+           />
+       <ImageButton
+           android:layout_width="50dp"
+           android:layout_height="50dp"
+           android:padding="10dp"
+           android:src="@drawable/pause"
+           android:background="@null"
+           android:visibility="invisible"
+           android:scaleType="fitCenter"
+           android:id="@+id/btnPause"
+           android:clickable="false"
+           android:layout_toStartOf="@id/btnNext"
+           />
+       <ImageButton
+           android:layout_width="50dp"
+           android:layout_height="50dp"
+           android:padding="10dp"
+           android:src="@null"
+           android:background="@null"
+           android:id="@+id/btn"
+           android:scaleType="fitCenter"
+           android:visibility="invisible"
            android:clickable="false"
            android:layout_toStartOf="@id/btnNext"
            />
@@ -73,8 +116,7 @@
            android:background="@null"
            android:clickable="false"
            android:id="@+id/btnPrevious"
-           android:layout_toStartOf="@id/btnPlay"
-
+           android:layout_toStartOf="@id/btn"
            android:layout_centerVertical="true"/>
        <ImageButton
            android:layout_width="50dp"
@@ -85,7 +127,7 @@
            android:id="@+id/btnNext"
            android:background="@null"
            android:scaleType="fitCenter"
-           android:layout_alignParentRight="true"
+           android:layout_alignParentEnd="true"
            android:layout_centerVertical="true"/>
 
 

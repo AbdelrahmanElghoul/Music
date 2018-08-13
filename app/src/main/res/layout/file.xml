@@ -27,10 +27,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:layout_centerInParent="true"
+        android:layout_toStartOf="@id/audioCount"
+        android:textAlignment="textStart"
         android:layout_margin="5dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true"
         android:layout_toEndOf="@id/icon"
         android:id="@+id/txtName"
 
@@ -41,7 +41,7 @@
         android:id="@+id/audioCount"
         android:visibility="visible"
         android:layout_toStartOf="@id/FileSpinner"
-        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
 
         />
 
