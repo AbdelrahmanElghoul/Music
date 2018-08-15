@@ -41,12 +41,23 @@ public class MainActivity extends AppCompatActivity {
         TotalTime=findViewById( R.id.TotalTime );
 
 
+        mSharedPreference sharedPreference=new mSharedPreference( this );
+        sharedPreference.LoadAll();
 
-
+        if(sharedPreference.getFolders().isEmpty()){
         Directory();
-    }
+        }
+        else{
+            recyclerView.setLayoutManager( new LinearLayoutManager( MainActivity.this ) );
+            recyclerView.setHasFixedSize( true );
+            recyclerView.setAdapter(
+                    new FoldersAdapter( MainActivity.this,sharedPreference.Folders
+                            ,pause,play,next,previous,audioname,seekBar,CurrentTime,TotalTime ) );
+        }
+        }
 
     public void Directory() {
+      String Path;
       try{
         StorageChooser chooser = new StorageChooser.Builder()
                 .withActivity(MainActivity.this)
@@ -70,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
                   recyclerView.setLayoutManager( new LinearLayoutManager( MainActivity.this ) );
                   recyclerView.setHasFixedSize( true );
                   recyclerView.setAdapter(
-                          new FoldersAdapter( MainActivity.this,audioData.getFile(),pause,play,next,previous,audioname,seekBar,CurrentTime,TotalTime ) );
+                          new FoldersAdapter( MainActivity.this,audioData.getFile()
+                                  ,pause,play,next,previous,audioname,seekBar,CurrentTime,TotalTime ) );
               }
           });
 
@@ -85,5 +97,14 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText( this, message, Toast.LENGTH_SHORT ).show();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(audioData!=null){
+        mSharedPreference sharedPreference=new mSharedPreference( this );
+        sharedPreference.Save(audioData.getFile() ,1 );
     }
+}
+
+}
 

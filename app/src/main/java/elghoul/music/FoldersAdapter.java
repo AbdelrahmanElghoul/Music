@@ -34,7 +34,10 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.FolderVi
     myExoPlayer player;
     private int j=0;
 
-    FoldersAdapter(Context context, List<AudioFile> audioFile,ImageButton pause, ImageButton play, ImageButton next, ImageButton previous, TextView audioname, SeekBar  seekBar,TextView CurrentTime,TextView TotalTime) {
+    FoldersAdapter(Context context, List<AudioFile> audioFile,ImageButton pause, ImageButton play
+            , ImageButton next, ImageButton previous, TextView audioname, SeekBar  seekBar
+            ,TextView CurrentTime,TextView TotalTime) {
+
         this.audioFile = audioFile;
         this.context = context;
         this.play = play;
@@ -61,7 +64,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.FolderVi
         holder.imageView.setImageResource( R.drawable.folder );
         holder.AudioCount.setText(String.valueOf(  audioFile.get( position ).getAudioPath().size()));
 
-        holder.Name.setText(  myExoPlayer.SetAudioName( audioFile.get( position ).getFilePath() ));
+        holder.Name.setText(  myExoPlayer.SetAudioName( audioFile.get( position ).getFile() ));
 
         ArrayAdapter<String> adapter=new ArrayAdapter<>(context,android.R.layout.simple_list_item_1, new String[]{"Add to list" ,"Shuffle" ,"Remove" } );
         holder.spinner.setAdapter( adapter );

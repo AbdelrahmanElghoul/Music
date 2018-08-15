@@ -8,15 +8,15 @@ import java.util.Set;
 public class AudioFile {
 
 
-    private String FilePath;
+    private String File; //Folder Path  / Playlist name
     private List<String> AudioPath;
 
-    public String getFilePath() {
-        return FilePath;
+    public String getFile() {
+        return File;
     }
 
     public AudioFile(String Path) {
-        this.FilePath=Path;
+        this.File=Path;
         this.AudioPath = new ArrayList<>(  );
     }
 

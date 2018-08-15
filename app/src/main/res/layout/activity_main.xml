@@ -17,31 +17,7 @@
 
    </android.support.v7.widget.RecyclerView>
 
-    <SeekBar
-        android:id="@+id/SeekBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/Relative"
-        android:layout_toStartOf="@id/TotalTime"
-        android:layout_toEndOf="@id/CurrentTime"
-        android:background="#eefff0" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="00:00"
-        android:id="@+id/CurrentTime"
-        android:layout_above="@id/Relative"
-        android:layout_alignParentStart="true"
-       />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="00:00"
-        android:id="@+id/TotalTime"
-        android:layout_above="@id/Relative"
-        android:layout_alignParentEnd="true"
-        />
-   <RelativeLayout
+    <RelativeLayout
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:orientation="horizontal"
@@ -134,4 +110,35 @@
 
    </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/Relative"
+        android:layout_alignParentStart="true"
+        android:background="#eefff0"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp">
+
+        <TextView
+            android:id="@+id/CurrentTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="00:00" />
+
+        <SeekBar
+            android:id="@+id/SeekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/TotalTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="00:00" />
+
+    </LinearLayout>
 </RelativeLayout>
