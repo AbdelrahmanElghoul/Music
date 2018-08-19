@@ -12,7 +12,12 @@
         <item>@drawable/playlist</item>
         <item>@drawable/folder</item>
         <item>@drawable/favourite</item>
-        <item>@drawable/play</item>
+        <item>@drawable/shuffle</item>
 
     </integer-array>
+    <string name="title_activity_player">ActivityPlayer</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

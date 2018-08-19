@@ -3,6 +3,8 @@ package elghoul.music;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,10 +22,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
-public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>{
+public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHolder> implements Parcelable {
 
     mAudioWife mAudioWife;
     private List<AudioFile> audioFile;
@@ -32,7 +35,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
     TextView audioname,CurrentTime,TotalTime;
     private SeekBar seekBar;
     myExoPlayer player;
-    private int j=0;
+
 
     ItemsAdapter(Context context, List<AudioFile> audioFile,ImageButton pause, ImageButton play
             , ImageButton next, ImageButton previous, TextView audioname, SeekBar  seekBar
@@ -157,4 +160,37 @@ seekBar.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener() {
             spinner=itemView.findViewById( R.id.FileSpinner );
         }
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable( (Parcelable) this.mAudioWife, flags );
+        dest.writeList( this.audioFile );
+
+    }
+
+    protected ItemsAdapter(Parcel in) {
+        this.mAudioWife = in.readParcelable( elghoul.music.mAudioWife.class.getClassLoader() );
+        this.audioFile = new ArrayList<AudioFile>();
+        in.readList( this.audioFile, AudioFile.class.getClassLoader() );
+
+
+
+    }
+
+    public static final Creator<ItemsAdapter> CREATOR = new Creator<ItemsAdapter>() {
+        @Override
+        public ItemsAdapter createFromParcel(Parcel source) {
+            return new ItemsAdapter( source );
+        }
+
+        @Override
+        public ItemsAdapter[] newArray(int size) {
+            return new ItemsAdapter[size];
+        }
+    };
 }

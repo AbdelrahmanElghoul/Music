@@ -1,11 +1,14 @@
 package elghoul.music;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class AudioFile {
+public class AudioFile implements Parcelable {
 
 
     private String File; //Folder Path  / Playlist name
@@ -28,4 +31,32 @@ public class AudioFile {
     public void setAudioPath(String audioPath) {
         AudioPath.add( audioPath );
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString( this.File );
+        dest.writeStringList( this.AudioPath );
+    }
+
+    protected AudioFile(Parcel in) {
+        this.File = in.readString();
+        this.AudioPath = in.createStringArrayList();
+    }
+
+    public static final Parcelable.Creator<AudioFile> CREATOR = new Parcelable.Creator<AudioFile>() {
+        @Override
+        public AudioFile createFromParcel(Parcel source) {
+            return new AudioFile( source );
+        }
+
+        @Override
+        public AudioFile[] newArray(int size) {
+            return new AudioFile[size];
+        }
+    };
 }

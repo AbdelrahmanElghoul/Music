@@ -8,10 +8,10 @@
 
    <android.support.v7.widget.RecyclerView
        android:layout_width="match_parent"
-       android:layout_height="wrap_content"
+       android:layout_height="match_parent"
        android:id="@+id/RecyclerView"
        android:layout_alignParentTop="true"
-       android:layout_above="@id/SeekBar"
+       android:layout_above="@id/Linear"
        >
 
 
@@ -117,6 +117,7 @@
         android:layout_alignParentStart="true"
         android:background="#eefff0"
         android:gravity="center"
+        android:id="@+id/Linear"
         android:orientation="horizontal"
         android:paddingStart="3dp"
         android:paddingEnd="3dp">
