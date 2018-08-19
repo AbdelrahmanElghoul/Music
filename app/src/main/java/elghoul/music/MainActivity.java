@@ -1,22 +1,22 @@
 package elghoul.music;
 
-import android.media.MediaPlayer;
-import android.media.PlaybackParams;
-import android.net.Uri;
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.codekidlabs.storagechooser.StorageChooser;
-
-
-import java.util.List;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     AudioData  audioData;
     RecyclerView recyclerView;
     ImageButton pause,next,previous,play;
-    TextView audioname,CurrentTime,TotalTime;
+    TextView audioName,CurrentTime,TotalTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +35,11 @@ public class MainActivity extends AppCompatActivity {
         next=findViewById( R.id.btnNext );
         play=findViewById( R.id.btnPlay );
         previous=findViewById( R.id.btnPrevious );
-        audioname=findViewById( R.id.audioName );
+        audioName=findViewById( R.id.audioName );
         seekBar=findViewById( R.id.SeekBar );
         CurrentTime=findViewById( R.id.CurrentTime );
         TotalTime=findViewById( R.id.TotalTime );
+
 
 
         mSharedPreference sharedPreference=new mSharedPreference( this );
@@ -48,11 +49,15 @@ public class MainActivity extends AppCompatActivity {
         Directory();
         }
         else{
-            recyclerView.setLayoutManager( new LinearLayoutManager( MainActivity.this ) );
+            recyclerView.setLayoutManager( new GridLayoutManager( MainActivity.this,2 ) );
             recyclerView.setHasFixedSize( true );
-            recyclerView.setAdapter(
-                    new FoldersAdapter( MainActivity.this,sharedPreference.Folders
-                            ,pause,play,next,previous,audioname,seekBar,CurrentTime,TotalTime ) );
+            recyclerView.setAdapter( new FolderAdapter( this,getResources().getStringArray(R.array.Folders ),getResources().getIntArray( R.array.FoldersIcon ) ));
+          /*  recyclerView.setAdapter(
+                    new ItemsAdapter( MainActivity.this,sharedPreference.Folders
+                            ,pause,play,next,previous,audioName,seekBar,CurrentTime,TotalTime ) );
+       */
+
+
         }
         }
 
@@ -81,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
                   recyclerView.setLayoutManager( new LinearLayoutManager( MainActivity.this ) );
                   recyclerView.setHasFixedSize( true );
                   recyclerView.setAdapter(
-                          new FoldersAdapter( MainActivity.this,audioData.getFile()
-                                  ,pause,play,next,previous,audioname,seekBar,CurrentTime,TotalTime ) );
+                          new ItemsAdapter( MainActivity.this,audioData.getFile()
+                                  ,pause,play,next,previous,audioName,seekBar,CurrentTime,TotalTime ) );
               }
           });
 
@@ -106,5 +111,51 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 
+}
+
+class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderViewHolder>{
+
+    Context context;
+    String[] Folders;
+    int[] Icons;
+
+    public FolderAdapter(Context context,String[] Folders,int[] Icons) {
+        this.context = context;
+        this.Folders=Folders;
+        this.Icons=Icons;
+    }
+
+    @NonNull
+    @Override
+    public FolderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater=LayoutInflater.from(context);
+        View view=inflater.inflate( R.layout.folder,parent,false );
+        return new FolderViewHolder( view );
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull FolderViewHolder holder, int position) {
+        holder.textView.setText( Folders[position] );
+        holder.imageView.setImageResource(Icons[position]  );
+
+        Log.e("Respurce", String.valueOf( Icons[position] ) );
+
+    }
+
+    @Override
+    public int getItemCount() {
+       return Folders.length;
+    }
+
+    class FolderViewHolder extends RecyclerView.ViewHolder{
+
+        ImageView imageView;
+        TextView textView;
+        public FolderViewHolder(View itemView) {
+            super( itemView );
+            imageView=itemView.findViewById( R.id.FolderIcon );
+            textView=itemView.findViewById( R.id.FolderName );
+        }
+    }
 }
 

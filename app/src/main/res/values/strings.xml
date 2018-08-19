@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Music</string>
+
+    <string-array name="Folders">
+        <item>Playlist</item>
+        <item>Folders</item>
+        <item>Favourite</item>
+        <item>Play All</item>
+    </string-array>
+
+    <integer-array name="FoldersIcon">
+        <item>@drawable/playlist</item>
+        <item>@drawable/folder</item>
+        <item>@drawable/favourite</item>
+        <item>@drawable/play</item>
+
+    </integer-array>
 </resources>

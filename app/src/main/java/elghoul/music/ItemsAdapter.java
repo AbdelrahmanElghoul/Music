@@ -23,7 +23,7 @@ import android.widget.Toast;
 import java.util.List;
 import java.util.Timer;
 
-public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.FolderViewHolder>{
+public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHolder>{
 
     mAudioWife mAudioWife;
     private List<AudioFile> audioFile;
@@ -34,7 +34,7 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.FolderVi
     myExoPlayer player;
     private int j=0;
 
-    FoldersAdapter(Context context, List<AudioFile> audioFile,ImageButton pause, ImageButton play
+    ItemsAdapter(Context context, List<AudioFile> audioFile,ImageButton pause, ImageButton play
             , ImageButton next, ImageButton previous, TextView audioname, SeekBar  seekBar
             ,TextView CurrentTime,TextView TotalTime) {
 
@@ -53,14 +53,14 @@ public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.FolderVi
 
     @NonNull
     @Override
-    public FolderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater=LayoutInflater.from(context);
         View view=inflater.inflate( R.layout.file,parent,false );
-        return new FolderViewHolder( view );
+        return new ItemViewHolder( view );
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FolderViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull ItemViewHolder holder, final int position) {
         holder.imageView.setImageResource( R.drawable.folder );
         holder.AudioCount.setText(String.valueOf(  audioFile.get( position ).getAudioPath().size()));
 
@@ -141,16 +141,14 @@ seekBar.setOnSeekBarChangeListener( new SeekBar.OnSeekBarChangeListener() {
        return audioFile.size();
     }
 
-
-
-    class FolderViewHolder extends RecyclerView.ViewHolder{
+    class ItemViewHolder extends RecyclerView.ViewHolder{
 
         RelativeLayout relativeLayout;
         ImageView imageView;
         TextView Name;
         Spinner spinner;
         TextView AudioCount;
-        public FolderViewHolder(View itemView) {
+        public ItemViewHolder(View itemView) {
             super( itemView );
             imageView=itemView.findViewById( R.id.icon );
             Name=itemView.findViewById( R.id.txtName );

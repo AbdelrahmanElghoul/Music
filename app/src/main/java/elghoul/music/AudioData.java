@@ -15,53 +15,41 @@ import java.util.List;
 public class AudioData {
 
 
-    private Context context;
-    private  List<AudioFile>File;
+    private List<AudioFile> File;
 
     AudioData(Context context, String Path) {
-        this.context = context;
-        this.File = new ArrayList<>(  );
+        this.File = new ArrayList<>();
         Data( Path );
-        msg( "Done" );
-
     }
 
     private void Data(String Path) {
-        Boolean Directory=false;
+        Boolean Directory = false;
         File file = new File( Path );
         File[] files = file.listFiles();
-        AudioFile audioFile=new AudioFile( Path );
-        for (int i = 0; i < files.length; i++) {
-                if(files[i].isDirectory()){
-                    Directory=true;
-                }
-                else if(files[i].isFile() && files[i].toString().endsWith( ".mp3" )){
-                   audioFile.setAudioPath( files[i].getPath() );
-                }
+        AudioFile audioFile = new AudioFile( Path );
+        for (java.io.File file2 : files) {
+            if (file2.isDirectory()) {
+                Directory = true;
+            } else if (file2.isFile() && file2.toString().endsWith( ".mp3" )) {
+                audioFile.setAudioPath( file2.getPath() );
+            }
 
         }
-        if(!audioFile.getAudioPath().isEmpty()){
-        File.add( audioFile );
+        if (!audioFile.getAudioPath().isEmpty()) {
+            File.add( audioFile );
         }
-        if(Directory){
-            for (int i=0;i<files.length;i++){
-                if(files[i].isDirectory()){
-                    Data( files[i].getPath() );
+        if (Directory) {
+            for (java.io.File file1 : files) {
+                if (file1.isDirectory()) {
+                    Data( file1.getPath() );
                 }
             }
         }
 
 
-        }
-
-
-
+    }
 
     public List<AudioFile> getFile() {
         return File;
-    }
-
-    void msg(String message) {
-        Toast.makeText( context, message, Toast.LENGTH_SHORT ).show();
     }
 }

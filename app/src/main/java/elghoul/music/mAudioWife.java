@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.util.AbstractMap;
 import java.util.List;
 
 import nl.changer.audiowife.AudioWife;
@@ -22,7 +23,7 @@ public class mAudioWife {
 
     public mAudioWife(final List<String> mediaPath, final Context context, ImageButton pause
             , ImageButton play, ImageButton next, ImageButton previous, final TextView audioname
-            , SeekBar seekBar, int index2, TextView CurrentTime,TextView TotalTime) {
+            , SeekBar seekBar, int index2, final TextView CurrentTime, TextView TotalTime) {
         this.mediaPath = mediaPath;
         this.context = context;
         this.audioname = audioname;
@@ -40,6 +41,7 @@ public class mAudioWife {
                 .setSeekBar( seekBar );
             audioname.setText( myMediaPlayer.SetAudioName(mediaPath.get( index ) ) );
             audioWife.play();
+
 
         AudioWife.getInstance().addOnCompletionListener( new MediaPlayer.OnCompletionListener() {
 
@@ -62,12 +64,10 @@ previous.setOnClickListener( new View.OnClickListener() {
     }
 } );
 
-
     }
 
     private void Next(){
         audioWife.release();
-
         index=(++index)%mediaPath.size();
         audioWife.init( context, Uri.parse( mediaPath.get(  index ) ) );
         audioWife.play();
@@ -92,6 +92,7 @@ previous.setOnClickListener( new View.OnClickListener() {
         return arrName[arrName.length-1];
 
     }
+
 
 
 

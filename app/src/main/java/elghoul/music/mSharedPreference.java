@@ -24,11 +24,15 @@ public class mSharedPreference {
         Favourite = new ArrayList<>(  );
         this.context=context;
     }
+
 /*
-* type 1=Folders
-* type 2=PlayList
-* type 3=Favourite
+*
+*  type 1 = Folders
+*  type 2 = PlayList
+*  type 3 = Favourite
+*
 * */
+
     void Save(List<AudioFile> data,int type){
         SharedPreferences sharedPreference=context.getSharedPreferences(String.valueOf( R.string.app_name ),Context.MODE_PRIVATE );
         SharedPreferences.Editor editor=sharedPreference.edit();
