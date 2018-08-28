@@ -1,18 +1,15 @@
 package elghoul.music;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.codekidlabs.storagechooser.StorageChooser;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,6 +43,19 @@ public class MainActivity extends AppCompatActivity {
         CurrentTime=findViewById( R.id.CurrentTime );
         TotalTime=findViewById( R.id.TotalTime );
 
+        /*
+        *
+        * Gives Error Look For Insializing it in class without  making static Views "Leak"
+        * and without sending Views as paramters
+        *
+        * */
+        mAudioWife.audioWife.init( this, Uri.EMPTY )
+                .setPlayView( play )
+                .setPauseView( pause )
+                .setRuntimeView( CurrentTime )
+                .setTotalTimeView( TotalTime )
+                .setSeekBar( seekBar );
+
 
 
         mSharedPreference sharedPreference=new mSharedPreference( this );
@@ -57,9 +68,7 @@ public class MainActivity extends AppCompatActivity {
             recyclerView.setLayoutManager( new GridLayoutManager( MainActivity.this,2 ) );
             recyclerView.setHasFixedSize( true );
             recyclerView.setAdapter( new FolderAdapter( this,getResources().getStringArray(R.array.Folders )
-                    ,getResources().obtainTypedArray( R.array.FoldersIcon ) ,
-                    new ItemsAdapter( MainActivity.this,sharedPreference.Folders
-                            ,pause,play,next,previous,audioName,seekBar,CurrentTime,TotalTime )
+                    ,getResources().obtainTypedArray( R.array.FoldersIcon )
 
 ));
 
@@ -67,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     public void Directory() {
-      String Path;
       try{
         StorageChooser chooser = new StorageChooser.Builder()
                 .withActivity(MainActivity.this)
@@ -92,16 +100,9 @@ public class MainActivity extends AppCompatActivity {
                   recyclerView.setHasFixedSize( true );
 
                   recyclerView.setAdapter( new FolderAdapter( MainActivity.this,getResources().getStringArray(R.array.Folders )
-                          ,getResources().obtainTypedArray( R.array.FoldersIcon ) ,
-                          new ItemsAdapter( MainActivity.this,audioData.getFile()
-                                  ,pause,play,next,previous,audioName,seekBar,CurrentTime,TotalTime )
+                          ,getResources().obtainTypedArray( R.array.FoldersIcon )
 
                   ));
-
-               /*   recyclerView.setAdapter(
-                          new ItemsAdapter( MainActivity.this,audioData.getFile()
-                                  ,pause,play,next,previous,audioName,seekBar,CurrentTime,TotalTime ) );*/
-
               }
           });
 
@@ -125,6 +126,14 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 
+    public void Previousbtn(View view) {
+        mAudioWife.Previous( this );
+    }
+
+    public void Nextbtn(View view) {
+        mAudioWife.Next( this );
+    }
+
 }
 
 class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderViewHolder>{
@@ -132,13 +141,13 @@ class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderViewHolder>
     Context context;
     String[] Folders;
     TypedArray Icons;
-    ItemsAdapter  itemsAdapter;
 
-    public FolderAdapter(Context context,String[] Folders,TypedArray Icons,ItemsAdapter itemsAdapter) {
+
+    public FolderAdapter(Context context,String[] Folders,TypedArray Icons) {
         this.context = context;
         this.Folders=Folders;
         this.Icons=Icons;
-        this.itemsAdapter=itemsAdapter;
+
     }
 
     @NonNull
@@ -156,24 +165,14 @@ class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderViewHolder>
         int width = (Resources.getSystem().getDisplayMetrics().widthPixels);
         //int height = (Resources.getSystem().getDisplayMetrics().heightPixels);
 
-        holder.imageView.getLayoutParams().width=width/2;
+        holder.imageView.getLayoutParams().width = width / 2;
         //holder.imageView.getLayoutParams().height=height/12;
 
 
         holder.textView.setText( Folders[position] );
-        holder.imageView.setImageResource(Icons.getResourceId( position ,-1) );
+        holder.imageView.setImageResource( Icons.getResourceId( position, -1 ) );
 
-        holder.imageView.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(position==1){
-                    Intent intent=new Intent( context,ActivityPlayer.class );
-                    intent.putExtra( "Adapter", itemsAdapter);
-                    context.startActivity(intent);
 
-                }
-            }
-        } );
 
     }
 
