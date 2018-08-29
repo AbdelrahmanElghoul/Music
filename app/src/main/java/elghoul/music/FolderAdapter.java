@@ -68,6 +68,7 @@ class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderViewHolder>
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace( R.id.FolderFrame, folders_frag );
                     fragmentTransaction.commit();
+                    
                 }
                 else
                     Toast.makeText( context, "clicked", Toast.LENGTH_SHORT ).show();
