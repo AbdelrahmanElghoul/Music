@@ -20,7 +20,7 @@ import nl.changer.audiowife.AudioWife;
 public abstract class mAudioWife{
 
 
-    public static AudioWife audioWife;
+    private static AudioWife audioWife;
     private static List<String> mediaPath;
     private static boolean playing=false;
     private static int index;
@@ -33,12 +33,13 @@ public abstract class mAudioWife{
     static void setPlayer(final Context context,int Index){
         if(playing){
             audioWife.release();
-            audioWife.init(context, Uri.parse( mediaPath.get( index ) ) );
+             audioWife.init(context, Uri.parse( mediaPath.get( index ) ) );
             audioWife.play();
+
         }
         else{
         playing=true;
-            audioWife.init(context, Uri.parse( mediaPath.get( index ) ) );
+             audioWife.init(context, Uri.parse( mediaPath.get( index ) ) );
             audioWife.play();
 
         }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class AudioData {
+public class AudioData implements Parcelable {
 
 
     private List<AudioFile> File;
@@ -54,5 +56,33 @@ public class AudioData {
         return File;
     }
 
+    public void setFile(List<AudioFile> file) {
+        File = file;
+    }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeTypedList( this.File );
+    }
+
+    protected AudioData(Parcel in) {
+        this.File = in.createTypedArrayList( AudioFile.CREATOR );
+    }
+
+    public static final Parcelable.Creator<AudioData> CREATOR = new Parcelable.Creator<AudioData>() {
+        @Override
+        public AudioData createFromParcel(Parcel source) {
+            return new AudioData( source );
+        }
+
+        @Override
+        public AudioData[] newArray(int size) {
+            return new AudioData[size];
+        }
+    };
 }

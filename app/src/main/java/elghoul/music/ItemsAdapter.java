@@ -40,7 +40,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         holder.imageView.setImageResource( R.drawable.folder );
         holder.AudioCount.setText(String.valueOf(  audioFile.get( position ).getAudioPath().size()));
 
-        holder.Name.setText(  mAudioWife.SetName( audioFile.get( position ).getFile() ));
+        holder.Name.setText(  mMediaPlayer.SetName( audioFile.get( position ).getFile() ));
 
         ArrayAdapter<String> adapter=new ArrayAdapter<>(context,android.R.layout.simple_list_item_1, new String[]{"Add to list" ,"Shuffle" ,"Remove" } );
         holder.spinner.setAdapter( adapter );
@@ -48,10 +48,11 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(i==1){
-                    mAudioWife.setList( audioFile.get( position ).getAudioPath() );
-                    mAudioWife.setPlayer( context,0 );
+                    mMediaPlayer.setList( audioFile.get( position ).getAudioPath() );
+                    mMediaPlayer.setPlayer( context,0 );
                   }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
