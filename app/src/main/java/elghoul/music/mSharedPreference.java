@@ -13,9 +13,9 @@ import java.util.List;
 
 public class mSharedPreference {
 
-    private static List<AudioFile> Folders;
-    private static List<AudioFile> PlayList;
-    private static List<String> Favourite;
+   static List<AudioFile> Folders;
+   static List<AudioFile> PlayList;
+   static List<String> Favourite;
     Context context;
 
     public mSharedPreference(Context context) {

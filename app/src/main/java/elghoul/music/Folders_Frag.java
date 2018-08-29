@@ -3,20 +3,20 @@ package elghoul.music;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
 
 
 public class Folders_Frag extends Fragment {
 
-    RecyclerView recyclerView;
+RecyclerView recyclerView;
 
     @Nullable
     @Override
@@ -27,21 +27,28 @@ public class Folders_Frag extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated( savedInstanceState );
+
         recyclerView=getActivity().findViewById( R.id.RecyclerView );
 
-        List<AudioFile> audioFiles= (List<AudioFile>) getArguments().getParcelable( "Adapter" );
 
-        if(audioFiles==null){
-            Folders( new FolderAdapter( getActivity()
-                    ,getResources().getStringArray( R.array.Folders )
-                    ,getResources().obtainTypedArray( R.array.FoldersIcon ) ) );
-        }else{
-            Items( new ItemsAdapter( getActivity(),audioFiles ) );
+try {
+        switch (getArguments().getInt( "Type" )){
+            case 1:
+                Folders( new FolderAdapter( getActivity()
+                        ,getResources().getStringArray( R.array.Folders )
+                        ,getResources().obtainTypedArray( R.array.FoldersIcon ) ) );
+                break;
+            case 2:
+                Items( new ItemsAdapter( getActivity(),mSharedPreference.getFolders() ) );
+                break;
         }
-
-
-
+    }catch (Exception e){
+        Log.e("Error",e.getMessage());
     }
+
+
+
+}
 
     void Folders(FolderAdapter folderAdapter){
 

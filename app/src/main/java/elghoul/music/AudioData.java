@@ -23,6 +23,7 @@ public class AudioData implements Parcelable {
     AudioData(Context context, String Path) {
         this.File = new ArrayList<>();
         Data( Path );
+        mSharedPreference sharedPreference=new mSharedPreference( context );
     }
 
     private void Data(String Path) {

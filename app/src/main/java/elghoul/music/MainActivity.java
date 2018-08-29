@@ -2,9 +2,10 @@ package elghoul.music;
 
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -20,7 +21,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     AudioData  audioData;
-    List<AudioFile> audioFiles;
+
 
     SeekBar seekBar;
     ImageButton pause,next,previous,play;
@@ -50,19 +51,17 @@ public class MainActivity extends AppCompatActivity {
 
         if(sharedPreference.getFolders().isEmpty()){
              Directory();
-        }else{
-            audioFiles=sharedPreference.getFolders();
         }
-       FragmentManager fragmentManager= getFragmentManager();
+
         Folders_Frag folders_frag=new Folders_Frag();
 
         Bundle bundle=new Bundle();
-        bundle.putParcelableArrayList( "List", (ArrayList<? extends Parcelable>) audioFiles );
+        bundle.putInt( "Type",1 );
         folders_frag.setArguments( bundle );
 
-        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace( R.id.FolderFrame,folders_frag );
-        fragmentTransaction.addToBackStack( "Folders" ).commit();
+        fragmentTransaction.addToBackStack( null).commit();
 
         }
 
@@ -84,8 +83,6 @@ public class MainActivity extends AppCompatActivity {
               @Override
               public void onSelect(String path) {
                   audioData= new AudioData(MainActivity.this,path);
-                  audioFiles=audioData.getFile();
-
                       mSharedPreference sharedPreference=new mSharedPreference( MainActivity.this );
                       sharedPreference.Save(audioData.getFile() ,1 );
               }
@@ -142,12 +139,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-
-        if(getSupportFragmentManager().getBackStackEntryCount()>0)
-             getSupportFragmentManager().popBackStack();
-
-      //  moveTaskToBack( true );
+        Log.e("FragCount", String.valueOf( getFragmentManager().getBackStackEntryCount() ) );
+        if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
+             getSupportFragmentManager().popBackStackImmediate() ;
+        } else {
+            super.onBackPressed();
+        }
+       // moveTaskToBack( true );
     }
 
 }

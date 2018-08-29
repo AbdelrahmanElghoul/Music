@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.app.FragmentManager;
-import android.os.Parcelable;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.annotation.NonNull;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 
 class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderViewHolder>{
 
@@ -58,17 +57,17 @@ class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderViewHolder>
 
                 if(position==1) {
                     Activity activity = (Activity) context;
-                    FragmentManager fragmentManager = activity.getFragmentManager();
+                    FragmentManager fragmentManager=((FragmentActivity)activity).getSupportFragmentManager();
                     Folders_Frag folders_frag = new Folders_Frag();
 
                     Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList( "List", (ArrayList<? extends Parcelable>) mSharedPreference.getFolders() );
+                    bundle.putInt( "Type",2 );
                     folders_frag.setArguments( bundle );
 
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
                     fragmentTransaction.replace( R.id.FolderFrame, folders_frag );
                     fragmentTransaction.commit();
-                    
+
                 }
                 else
                     Toast.makeText( context, "clicked", Toast.LENGTH_SHORT ).show();
