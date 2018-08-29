@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
              getSupportFragmentManager().popBackStackImmediate() ;
         } else {
             super.onBackPressed();
+            
         }
        // moveTaskToBack( true );
     }
