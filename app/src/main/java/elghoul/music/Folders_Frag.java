@@ -1,5 +1,6 @@
 package elghoul.music;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,11 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
-
 public class Folders_Frag extends Fragment {
 
-RecyclerView recyclerView;
+    Communicat communicat;
+    RecyclerView recyclerView;
 
     @Nullable
     @Override
@@ -25,9 +25,14 @@ RecyclerView recyclerView;
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach( context );
+        communicat = (Communicat) context;
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated( savedInstanceState );
-
         recyclerView=getActivity().findViewById( R.id.RecyclerView );
 
 
@@ -36,10 +41,12 @@ try {
             case 1:
                 Folders( new FolderAdapter( getActivity()
                         ,getResources().getStringArray( R.array.Folders )
-                        ,getResources().obtainTypedArray( R.array.FoldersIcon ) ) );
+                        ,getResources().obtainTypedArray( R.array.FoldersIcon )
+                        ,communicat
+                ) );
                 break;
             case 2:
-                Items( new ItemsAdapter( getActivity(),mSharedPreference.getFolders() ) );
+                Items( new ItemsAdapter( getActivity(),mSharedPreference.getFolders(),communicat ) );
                 break;
         }
     }catch (Exception e){
@@ -56,6 +63,7 @@ try {
         recyclerView.setLayoutManager( new GridLayoutManager( getActivity(),getResources().obtainTypedArray( R.array.FoldersIcon ).length() ) );
         recyclerView.setAdapter( folderAdapter );
 
+
     }
 
     void Items(ItemsAdapter itemsAdapter){
@@ -63,7 +71,6 @@ try {
         recyclerView.setHasFixedSize( true );
         recyclerView.setLayoutManager( new LinearLayoutManager( getActivity() ) );
         recyclerView.setAdapter( itemsAdapter );
-
         }
 
 

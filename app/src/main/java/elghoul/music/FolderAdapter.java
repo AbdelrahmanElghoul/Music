@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,21 +17,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderViewHolder>{
 
+    private Communicat communicat;
     private Context context;
     String[] Folders;
     private TypedArray Icons;
 
-    FolderAdapter(Context context, String[] Folders, TypedArray Icons) {
+    FolderAdapter(Context context, String[] Folders, TypedArray Icons,Communicat communicat) {
         this.context = context;
         this.Folders=Folders;
         this.Icons=Icons;
+        this.communicat=communicat;
     }
 
     @NonNull
     @Override
+
     public FolderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater=LayoutInflater.from(context);
         View view=inflater.inflate( R.layout.folder,parent,false );
@@ -47,7 +49,6 @@ class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderViewHolder>
         holder.imageView.getLayoutParams().width = width / 3;
         //holder.imageView.getLayoutParams().height=height/12;
 
-
         holder.textView.setText( Folders[position] );
         holder.imageView.setImageResource( Icons.getResourceId( position, -1 ) );
 
@@ -56,18 +57,7 @@ class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderViewHolder>
             public void onClick(View view) {
 
                 if(position==1) {
-                    Activity activity = (Activity) context;
-                    FragmentManager fragmentManager=((FragmentActivity)activity).getSupportFragmentManager();
-                    Folders_Frag folders_frag = new Folders_Frag();
-
-                    Bundle bundle = new Bundle();
-                    bundle.putInt( "Type",2 );
-                    folders_frag.setArguments( bundle );
-
-                    FragmentTransaction fragmentTransaction =fragmentManager.beginTransaction();
-                    fragmentTransaction.replace( R.id.FolderFrame, folders_frag );
-                    fragmentTransaction.commit();
-
+                    communicat.OpenFragment( 2 );
                 }
                 else
                     Toast.makeText( context, "clicked", Toast.LENGTH_SHORT ).show();

@@ -13,51 +13,45 @@ import java.util.List;
 
 public class mSharedPreference {
 
-   static List<AudioFile> Folders;
-   static List<AudioFile> PlayList;
-   static List<String> Favourite;
-    Context context;
+    private static List<AudioFile> Folders;
+    private static List<AudioFile> PlayList;
+    private static List<String> Favourite;
+    private Context context;
 
-    public mSharedPreference(Context context) {
+    mSharedPreference(Context context) {
         Folders =new ArrayList<>( );
         PlayList =new ArrayList<>(  );
         Favourite = new ArrayList<>(  );
         this.context=context;
     }
 
-/*
-*
+/**
 *  type 1 = Folders
 *  type 2 = PlayList
 *  type 3 = Favourite
-*
 * */
-
-    void Save(List<AudioFile> data,int type){
+    void Save(List<AudioFile> data,final int type){
         SharedPreferences sharedPreference=context.getSharedPreferences(String.valueOf( R.string.app_name ),Context.MODE_PRIVATE );
         SharedPreferences.Editor editor=sharedPreference.edit();
         Gson gson=new Gson();
         String json=gson.toJson( data );
 
-        switch (type){
+        switch (type) {
             case 1:
-                editor.putString("Folders", json);
+                editor.putString( "Folders", json );
                 editor.apply();
                 break;
 
             case 2:
-                editor.putString( "PlayList",json );
+                editor.putString( "PlayList", json );
                 editor.apply();
                 break;
 
             case 3:
-                editor.putString( "Favourite",json );
+                editor.putString( "Favourite", json );
                 editor.apply();
                 break;
         }
-
-
-
     }
 
     void LoadAll(){
