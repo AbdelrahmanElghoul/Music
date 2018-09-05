@@ -1,14 +1,9 @@
 package elghoul.music;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,16 +14,18 @@ import android.widget.Toast;
 
 class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderViewHolder>{
 
-    private Communicat communicat;
+    private FragmentStarter fragment;
+    private myPlayer player;
     private Context context;
     String[] Folders;
     private TypedArray Icons;
 
-    FolderAdapter(Context context, String[] Folders, TypedArray Icons,Communicat communicat) {
+    FolderAdapter(Context context, String[] Folders, TypedArray Icons,FragmentStarter fragments,myPlayer player) {
         this.context = context;
         this.Folders=Folders;
         this.Icons=Icons;
-        this.communicat=communicat;
+        this.player=player;
+        this.fragment=fragments;
     }
 
     @NonNull
@@ -43,11 +40,9 @@ class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderViewHolder>
     @Override
     public void onBindViewHolder(@NonNull FolderViewHolder holder, final int position) {
 
-        int width = (Resources.getSystem().getDisplayMetrics().widthPixels);
-        //int height = (Resources.getSystem().getDisplayMetrics().heightPixels);
 
-        holder.imageView.getLayoutParams().width = width / 3;
-        //holder.imageView.getLayoutParams().height=height/12;
+        //int height = (Resources.getSystem().getDisplayMetrics().heightPixels);
+        holder.imageView.getLayoutParams().width = (Resources.getSystem().getDisplayMetrics().widthPixels) / 3;
 
         holder.textView.setText( Folders[position] );
         holder.imageView.setImageResource( Icons.getResourceId( position, -1 ) );
@@ -55,12 +50,17 @@ class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderViewHolder>
         holder.imageView.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(position==1) {
-                    communicat.OpenFragment( 2 );
-                }
-                else
-                    Toast.makeText( context, "clicked", Toast.LENGTH_SHORT ).show();
+                    switch (position) {
+                        case 0:
+                            player.StartPlayer( new PlayList().All( mSharedPreference.getFolders() ) );
+                            break;
+                        case 1:
+                            fragment.OpenFragment( 2 );
+                            break;
+                        default:
+                            Toast.makeText( context, "clicked", Toast.LENGTH_SHORT ).show();
+                            break;
+                    }
             }
         } );
 

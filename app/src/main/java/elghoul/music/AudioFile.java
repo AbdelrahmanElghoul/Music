@@ -5,7 +5,6 @@ import java.util.List;
 
 public class AudioFile{
 
-
     private String File; //Folder Path  / Playlist name
     private List<String> AudioPath;
 

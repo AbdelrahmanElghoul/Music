@@ -15,8 +15,9 @@ import android.view.ViewGroup;
 
 public class Folders_Frag extends Fragment {
 
-    Communicat communicat;
+    FragmentStarter fragment;
     RecyclerView recyclerView;
+    myPlayer player;
 
     @Nullable
     @Override
@@ -27,7 +28,8 @@ public class Folders_Frag extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach( context );
-        communicat = (Communicat) context;
+        fragment = (FragmentStarter) context;
+        player=(myPlayer)context;
     }
 
     @Override
@@ -42,11 +44,11 @@ try {
                 Folders( new FolderAdapter( getActivity()
                         ,getResources().getStringArray( R.array.Folders )
                         ,getResources().obtainTypedArray( R.array.FoldersIcon )
-                        ,communicat
+                        , fragment,player
                 ) );
                 break;
             case 2:
-                Items( new ItemsAdapter( getActivity(),mSharedPreference.getFolders(),communicat ) );
+                Items( new ItemsAdapter( getActivity(),mSharedPreference.getFolders(), player ) );
                 break;
         }
     }catch (Exception e){
@@ -72,6 +74,5 @@ try {
         recyclerView.setLayoutManager( new LinearLayoutManager( getActivity() ) );
         recyclerView.setAdapter( itemsAdapter );
         }
-
 
  }

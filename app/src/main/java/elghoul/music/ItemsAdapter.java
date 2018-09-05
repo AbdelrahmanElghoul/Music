@@ -1,10 +1,8 @@
 package elghoul.music;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,18 +15,16 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import nl.changer.audiowife.AudioWife;
-
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHolder> {
 
-    private Communicat communicat;
+    private myPlayer player;
     private List<AudioFile> audioFile;
     private Context context;
 
-    ItemsAdapter(Context context, List<AudioFile> audioFile,Communicat communicat) {
+    ItemsAdapter(Context context, List<AudioFile> audioFile,myPlayer player) {
         this.audioFile = audioFile;
         this.context = context;
-        this.communicat=communicat;
+        this.player = player;
     }
 
     @NonNull
@@ -46,14 +42,14 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
         holder.Name.setText(  mAudioWife.SetName( audioFile.get( position ).getFile() ));
 
-        ArrayAdapter<String> adapter=new ArrayAdapter<>(context,android.R.layout.simple_list_item_1, new String[]{"Add to list" ,"Shuffle" ,"Remove" } );
+        ArrayAdapter<String> adapter=new ArrayAdapter<>(context,android.R.layout.simple_list_item_1, new String[]{"Add to list" ,"Play" ,"Remove" } );
         holder.spinner.setAdapter( adapter );
         holder.spinner.setOnItemSelectedListener( new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 if(i==1){
-                        communicat.Player( audioFile.get( position ).getAudioPath() );
+                        player.StartPlayer( audioFile.get( position ).getAudioPath() );
                   }
             }
 

@@ -1,7 +1,8 @@
 package elghoul.music;
 
+import android.graphics.Color;
+import android.media.Image;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -9,21 +10,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.SeekBar;
-import android.widget.TextView;
+import android.widget.Switch;
 
-import com.codekidlabs.storagechooser.StorageChooser;
-
-import java.util.List;
 import nl.changer.audiowife.AudioWife;
 
-public class MainActivity extends mAudioWife implements Communicat{
+public class MainActivity extends mAudioWife implements FragmentStarter {
 
-    AudioData  audioData;
-
-    SeekBar seekBar;
-    ImageButton pause,next,previous,play;
-    TextView CurrentTime,TotalTime;
+    ImageButton Shuffle;
     FrameLayout frameLayout;
 
     @Override
@@ -33,6 +26,7 @@ public class MainActivity extends mAudioWife implements Communicat{
 
         next=findViewById( R.id.btnNext );
         previous=findViewById( R.id.btnPrevious );
+        Shuffle=findViewById( R.id.Shufflebtn );
 
         pause=findViewById( R.id.btnPause );
         play=findViewById( R.id.btnPlay );
@@ -46,7 +40,7 @@ public class MainActivity extends mAudioWife implements Communicat{
         AudioWife.getInstance().addOnCompletionListener( new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                Next();
+                Next(Random);
             }
         } );
 
@@ -54,20 +48,11 @@ public class MainActivity extends mAudioWife implements Communicat{
         sharedPreference.LoadAll();
 
         if(mSharedPreference.getFolders().isEmpty()){
-             Directory();
-        }
-         OpenFragment(1);
-        }
+            new AudioData(  this);
+        }         OpenFragment(1);
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if(audioData!=null){
-              mSharedPreference sharedPreference=new mSharedPreference( this );
-              sharedPreference.Save(audioData.getFile() ,1 );
-    }
-}
-
+        }
+        /*
     public void Directory() {
         try{
             StorageChooser chooser = new StorageChooser.Builder()
@@ -94,14 +79,7 @@ public class MainActivity extends mAudioWife implements Communicat{
             Log.e("Directory",e.getMessage());
         }
     }
-
-    public void Previousbtn(View view) {
-        Previous();
-    }
-
-    public void Nextbtn(View view) {
-        Next();
-    }
+    */
 
     @Override
     public void OpenFragment(int Type){
@@ -122,31 +100,30 @@ public class MainActivity extends mAudioWife implements Communicat{
     public void onBackPressed() {
        Log.e("FragCount", String.valueOf( getSupportFragmentManager().getBackStackEntryCount() ) );
         if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
+            getSupportFragmentManager().popBackStackImmediate();
            OpenFragment( 1 );
         } else {
             super.onBackPressed();
         }
     }
 
-    @Override
-    public void Player(List<String> list) {
-        try {
-            mediaPath=list;
+    public void Previousbtn(View view) {
+        Previous();
+    }
 
-            AudioWife.getInstance().release();
-                AudioWife.getInstance().init(this, Uri.parse( list.get( 0 ) ) )
-                    .setPlayView( play )
-                    .setPauseView( pause )
-                    .setSeekBar( seekBar )
-                    .setTotalTimeView( TotalTime )
-                    .setRuntimeView( CurrentTime )
-                    .play();
+    public void Nextbtn(View view) {
+        Next(Random);
+    }
 
-            audioName.setText( mAudioWife.SetName( mediaPath.get( index ) ) );
-
-        }catch (Exception e){
-            Log.e( "Player Error", e.getMessage());
+    public void ShuffleBtn(View view) {
+        if(Random){
+            Shuffle.setBackgroundColor(Color.parseColor( "#91d5e1" )  );
+            Random=false;
+        }else{
+            Shuffle.setBackgroundColor(Color.parseColor( "#91999b" ));
+            Random=true;
         }
+
     }
 }
 

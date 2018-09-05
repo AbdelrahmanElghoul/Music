@@ -1,22 +1,59 @@
 package elghoul.music;
 
+import android.app.Activity;
 import android.content.Context;
+import android.provider.ContactsContract;
+import android.util.Log;
+
+import com.codekidlabs.storagechooser.StorageChooser;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AudioData{
 
-
     private List<AudioFile> File;
 
-    AudioData(Context context, String Path) {
+    AudioData(Activity activity) {
         this.File = new ArrayList<>();
-        Data( Path );
-        new mSharedPreference( context );
+        Directory( activity );
+        Log.e( "Filter","Done" );
+        Log.e( "Size", String.valueOf( getFile().size() ) );
     }
 
-    private void Data(String Path) {
+    public List<AudioFile> getFile() {
+        return File;
+    }
+
+    private void Directory(final Activity activity) {
+        try{
+            StorageChooser chooser = new StorageChooser.Builder()
+                    .withActivity(activity)
+                    .withFragmentManager(activity.getFragmentManager())
+                    .withMemoryBar(true)
+                    .showHidden( false )
+                    .allowCustomPath(true)
+                    .setType(StorageChooser.DIRECTORY_CHOOSER)
+                    .filter( StorageChooser.FileType.AUDIO )
+                    .build();
+
+            chooser.show();
+
+            chooser.setOnSelectListener(new StorageChooser.OnSelectListener() {
+                @Override
+                public void onSelect(String path) {
+                    Filter( path );
+                    new mSharedPreference( activity.getApplicationContext()).Save(  getFile(),1);
+
+                }
+            });
+        }catch (Exception e){
+            Log.e("Directory",e.getMessage());
+        }
+    }
+
+    private void Filter(String Path) {
         Boolean Directory = false;
         File file = new File( Path );
         File[] files = file.listFiles();
@@ -35,20 +72,12 @@ public class AudioData{
         if (Directory) {
             for (java.io.File file1 : files) {
                 if (file1.isDirectory()) {
-                    Data( file1.getPath() );
+                    Filter( file1.getPath() );
                 }
             }
         }
 
 
-    }
-
-    public List<AudioFile> getFile() {
-        return File;
-    }
-
-    public void setFile(List<AudioFile> file) {
-        File = file;
     }
 
 }
