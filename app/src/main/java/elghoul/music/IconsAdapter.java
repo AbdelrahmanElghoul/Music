@@ -52,7 +52,7 @@ class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.FolderViewHolder>{
             public void onClick(View view) {
                     switch (position) {
                         case 0:
-                            player.StartPlayer( new PlayList().All( mSharedPreference.getFolders() ),0 );
+                            player.StartPlayer( new PlayList().All( Load.Folders(context) ),0 );
                             break;
                         case 1:
                             fragment.OpenFragment( "folders" );

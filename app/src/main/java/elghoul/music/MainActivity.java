@@ -37,10 +37,7 @@ public class MainActivity extends mAudioWife implements FragmentStarter {
 
         frameLayout=findViewById( R.id.FolderFrame );
 
-     new Load(this).All();
-
-     if(mSharedPreference.getFolders().isEmpty()){  new AudioData(  this); }
-
+     if(Load.Folders(this).isEmpty()){  new AudioData(  this); }
              OpenFragment("icons");
     }
 

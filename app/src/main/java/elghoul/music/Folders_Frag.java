@@ -49,8 +49,7 @@ try {
                 ) );
                 break;
             case "folders":
-                Folders( new FoldersAdapter( getActivity(),mSharedPreference.getFolders(), player ) );
-                Log.e( "Fragment", String.valueOf( mSharedPreference.getFolders().size() ) );
+                Folders( new FoldersAdapter( getActivity(),Load.Folders(getContext()), player ) );
                 break;
             default:
                 Toast.makeText( getContext(), "Error Occured", Toast.LENGTH_SHORT ).show();

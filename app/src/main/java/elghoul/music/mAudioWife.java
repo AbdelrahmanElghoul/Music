@@ -62,7 +62,7 @@ public abstract class mAudioWife extends AppCompatActivity implements myPlayer{
                     .setRuntimeView( CurrentTime )
                     .play();
 
-            audioName.setText( Name.SetName( mediaPath.get( 0 ) ) );
+            audioName.setText( Name.SetName( mediaPath.get( index ) ) );
 
         }catch (Exception e){
             Toast.makeText( this, e.getMessage(), Toast.LENGTH_SHORT ).show();
