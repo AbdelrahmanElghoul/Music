@@ -1,7 +1,5 @@
 package elghoul.music;
 
-import android.util.Log;
-
 import java.util.Deque;
 
 public class Previous{

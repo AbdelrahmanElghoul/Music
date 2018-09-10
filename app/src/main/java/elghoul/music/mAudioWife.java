@@ -1,18 +1,17 @@
 package elghoul.music;
 
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
-import java.util.Stack;
-
 import nl.changer.audiowife.AudioWife;
 
 public abstract class mAudioWife extends AppCompatActivity implements myPlayer{
@@ -22,19 +21,24 @@ public abstract class mAudioWife extends AppCompatActivity implements myPlayer{
     ImageButton pause,next,previous,play;
     TextView CurrentTime,TotalTime;
 
-   private List<String> mediaPath;
-   private Deque<Integer> History=new ArrayDeque<>();
+   private static List<String> mediaPath;
+   private static Deque<Integer> History=new ArrayDeque<>();
 
-    int index;
-    boolean Random=false;
+   private static int index;
+   boolean Random=false;
 
-    void Next(boolean Random){
+    void Next(){
        index=new Index().getNext( Random,index,mediaPath.size() ).getIndex();
+       History.push( index );
 
-        AudioWife.getInstance().release();
-        AudioWife.getInstance().init( this, Uri.parse( mediaPath.get( index ) ) ).play();
-        audioName.setText( mAudioWife.SetName( mediaPath.get( index ) ) );
-        History.push( index );
+        StartPlayer( mediaPath,index );
+
+        AudioWife.getInstance().addOnCompletionListener( new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                Next();
+            }
+        } );
 
         Log.e( "Next Index", String.valueOf( index ) );
     }
@@ -42,25 +46,17 @@ public abstract class mAudioWife extends AppCompatActivity implements myPlayer{
     void Previous(){
         index=new Index().getPrevious( index,History,mediaPath.size() ).getIndex();
 
-        AudioWife.getInstance().release();
-        AudioWife.getInstance().init( this, Uri.parse( mediaPath.get( index ) ) ).play();
-        audioName.setText( mAudioWife.SetName( mediaPath.get( index ) ) );
-
+        StartPlayer( mediaPath,index );
         Log.e( "Previous Index", String.valueOf( index ) );
     }
 
-    static  String SetName(String name){
-        String[] arrName=name.split( "/" );
-        return arrName[arrName.length-1];
-    }
-
     @Override
-    public void StartPlayer(List<String> list) {
+    public void StartPlayer(List<String> list,int Index) {
         try {
             mediaPath=list;
 
             AudioWife.getInstance().release();
-            AudioWife.getInstance().init(this, Uri.parse( list.get( 0 ) ) )
+            AudioWife.getInstance().init(this, Uri.parse( list.get( Index ) ) )
                     .setPlayView( play )
                     .setPauseView( pause )
                     .setSeekBar( seekBar )
@@ -68,12 +64,12 @@ public abstract class mAudioWife extends AppCompatActivity implements myPlayer{
                     .setRuntimeView( CurrentTime )
                     .play();
 
-            audioName.setText( mAudioWife.SetName( mediaPath.get( 0 ) ) );
+            audioName.setText( Name.SetName( mediaPath.get( 0 ) ) );
 
         }catch (Exception e){
-            Log.e( "Player Error", e.getMessage());
+            Toast.makeText( this, e.getMessage(), Toast.LENGTH_SHORT ).show();
+            Next();
         }
     }
-
 
 }

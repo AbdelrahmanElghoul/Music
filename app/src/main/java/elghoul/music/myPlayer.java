@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface myPlayer {
 
-     void StartPlayer(List<String> list);
+     void StartPlayer(List<String> list,int Index);
 
 }

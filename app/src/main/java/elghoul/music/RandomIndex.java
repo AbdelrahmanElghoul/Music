@@ -7,6 +7,7 @@ class RandomIndex extends Next{
         Index( Current,Length );
     }
 
+    @Override
     void Index(int Current, int Length) {
         int random;
         do{

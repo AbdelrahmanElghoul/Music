@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 public class Folders_Frag extends Fragment {
 
@@ -39,17 +40,20 @@ public class Folders_Frag extends Fragment {
 
 
 try {
-        switch (getArguments().getInt( "Type" )){
-            case 1:
-                Folders( new FolderAdapter( getActivity()
+        switch (getArguments().getString( "Type" ).toLowerCase()){
+            case "icons":
+                Icons( new IconsAdapter( getActivity()
                         ,getResources().getStringArray( R.array.Folders )
                         ,getResources().obtainTypedArray( R.array.FoldersIcon )
                         , fragment,player
                 ) );
                 break;
-            case 2:
-                Items( new ItemsAdapter( getActivity(),mSharedPreference.getFolders(), player ) );
+            case "folders":
+                Folders( new FoldersAdapter( getActivity(),mSharedPreference.getFolders(), player ) );
+                Log.e( "Fragment", String.valueOf( mSharedPreference.getFolders().size() ) );
                 break;
+            default:
+                Toast.makeText( getContext(), "Error Occured", Toast.LENGTH_SHORT ).show();
         }
     }catch (Exception e){
         Log.e("Error",e.getMessage());
@@ -59,20 +63,20 @@ try {
 
 }
 
-    void Folders(FolderAdapter folderAdapter){
+    private void Icons(IconsAdapter iconsAdapter){
 
         recyclerView.setHasFixedSize( true );
         recyclerView.setLayoutManager( new GridLayoutManager( getActivity(),getResources().obtainTypedArray( R.array.FoldersIcon ).length() ) );
-        recyclerView.setAdapter( folderAdapter );
+        recyclerView.setAdapter( iconsAdapter );
 
 
     }
 
-    void Items(ItemsAdapter itemsAdapter){
+    private void Folders(FoldersAdapter foldersAdapter){
 
         recyclerView.setHasFixedSize( true );
         recyclerView.setLayoutManager( new LinearLayoutManager( getActivity() ) );
-        recyclerView.setAdapter( itemsAdapter );
+        recyclerView.setAdapter( foldersAdapter );
         }
 
  }

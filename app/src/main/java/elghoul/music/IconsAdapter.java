@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderViewHolder>{
+class IconsAdapter extends RecyclerView.Adapter<IconsAdapter.FolderViewHolder>{
 
     private FragmentStarter fragment;
     private myPlayer player;
@@ -20,7 +20,7 @@ class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderViewHolder>
     String[] Folders;
     private TypedArray Icons;
 
-    FolderAdapter(Context context, String[] Folders, TypedArray Icons,FragmentStarter fragments,myPlayer player) {
+    IconsAdapter(Context context, String[] Folders, TypedArray Icons, FragmentStarter fragments, myPlayer player) {
         this.context = context;
         this.Folders=Folders;
         this.Icons=Icons;
@@ -52,10 +52,10 @@ class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderViewHolder>
             public void onClick(View view) {
                     switch (position) {
                         case 0:
-                            player.StartPlayer( new PlayList().All( mSharedPreference.getFolders() ) );
+                            player.StartPlayer( new PlayList().All( mSharedPreference.getFolders() ),0 );
                             break;
                         case 1:
-                            fragment.OpenFragment( 2 );
+                            fragment.OpenFragment( "folders" );
                             break;
                         default:
                             Toast.makeText( context, "clicked", Toast.LENGTH_SHORT ).show();

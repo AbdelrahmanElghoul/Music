@@ -2,5 +2,5 @@ package elghoul.music;
 
 public interface FragmentStarter {
 
-    void OpenFragment(int Type);
+    void OpenFragment(String Type);
 }

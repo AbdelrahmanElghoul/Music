@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -42,7 +41,7 @@
            android:layout_toEndOf="@id/defaultIcon"
            android:layout_toStartOf="@id/btnPrevious"
            android:layout_centerVertical="true"
-           android:hint="name"
+           android:hint="@{AudioFile.File}"
            />
        <ImageButton
            android:layout_width="50dp"

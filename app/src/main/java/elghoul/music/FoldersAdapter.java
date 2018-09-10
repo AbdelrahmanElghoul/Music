@@ -15,13 +15,13 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHolder> {
+public class FoldersAdapter extends RecyclerView.Adapter<FoldersAdapter.ItemViewHolder> {
 
     private myPlayer player;
     private List<AudioFile> audioFile;
     private Context context;
 
-    ItemsAdapter(Context context, List<AudioFile> audioFile,myPlayer player) {
+    FoldersAdapter(Context context, List<AudioFile> audioFile, myPlayer player) {
         this.audioFile = audioFile;
         this.context = context;
         this.player = player;
@@ -40,16 +40,19 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         holder.imageView.setImageResource( R.drawable.folder );
         holder.AudioCount.setText(String.valueOf(  audioFile.get( position ).getAudioPath().size()));
 
-        holder.Name.setText(  mAudioWife.SetName( audioFile.get( position ).getFile() ));
+        holder.Name.setText(  Name.SetName( audioFile.get( position ).getFile() ));
 
-        ArrayAdapter<String> adapter=new ArrayAdapter<>(context,android.R.layout.simple_list_item_1, new String[]{"Add to list" ,"Play" ,"Remove" } );
+        ArrayAdapter<String> adapter=new ArrayAdapter<>(context,android.R.layout.simple_list_item_1
+                , new String[]{"Add to list" ,"Play" ,"Remove" } );
         holder.spinner.setAdapter( adapter );
         holder.spinner.setOnItemSelectedListener( new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                if(i==1){
-                        player.StartPlayer( audioFile.get( position ).getAudioPath() );
+                switch (i){
+                    case 1:
+                        player.StartPlayer( audioFile.get( position ).getAudioPath(),0 );
+                        break;
                   }
             }
 

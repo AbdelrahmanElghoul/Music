@@ -1,12 +1,8 @@
 package elghoul.music;
 
 import android.app.Activity;
-import android.content.Context;
-import android.provider.ContactsContract;
 import android.util.Log;
-
 import com.codekidlabs.storagechooser.StorageChooser;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +14,6 @@ public class AudioData{
     AudioData(Activity activity) {
         this.File = new ArrayList<>();
         Directory( activity );
-        Log.e( "Filter","Done" );
-        Log.e( "Size", String.valueOf( getFile().size() ) );
     }
 
     public List<AudioFile> getFile() {
@@ -44,7 +38,8 @@ public class AudioData{
                 @Override
                 public void onSelect(String path) {
                     Filter( path );
-                    new mSharedPreference( activity.getApplicationContext()).Save(  getFile(),1);
+                    new mSharedPreference( activity.getApplicationContext()).SaveFolders(getFile());
+                    Log.e( "Size", String.valueOf( getFile().size() ) );
 
                 }
             });
