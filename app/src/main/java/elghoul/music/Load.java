@@ -71,4 +71,11 @@ class Load {
             return Favourite;
     }
 
+
+    static void Updating(){
+        Folders=new ArrayList<>(  );
+        PlayList=new ArrayList<>(  );
+        Favourite=new ArrayList<>(  );
+    }
+
 }
