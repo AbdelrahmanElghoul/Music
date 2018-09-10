@@ -38,7 +38,7 @@ public class AudioData{
                 @Override
                 public void onSelect(String path) {
                     Filter( path );
-                    new mSharedPreference( activity.getApplicationContext()).SaveFolders(getFile());
+                    new Save( activity ).Folders( getFile() );
                     Log.e( "Size", String.valueOf( getFile().size() ) );
 
                 }

@@ -37,7 +37,7 @@ public class MainActivity extends mAudioWife implements FragmentStarter {
 
         frameLayout=findViewById( R.id.FolderFrame );
 
-     new mSharedPreference( this ).LoadAll();
+     new Load(this).All();
 
      if(mSharedPreference.getFolders().isEmpty()){  new AudioData(  this); }
 

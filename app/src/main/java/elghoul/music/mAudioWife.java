@@ -30,9 +30,7 @@ public abstract class mAudioWife extends AppCompatActivity implements myPlayer{
     void Next(){
        index=new Index().getNext( Random,index,mediaPath.size() ).getIndex();
        History.push( index );
-
         StartPlayer( mediaPath,index );
-
         AudioWife.getInstance().addOnCompletionListener( new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
@@ -44,8 +42,8 @@ public abstract class mAudioWife extends AppCompatActivity implements myPlayer{
     }
 
     void Previous(){
-        index=new Index().getPrevious( index,History,mediaPath.size() ).getIndex();
 
+        index=new Index().getPrevious( index,History,mediaPath.size() ).getIndex();
         StartPlayer( mediaPath,index );
         Log.e( "Previous Index", String.valueOf( index ) );
     }
