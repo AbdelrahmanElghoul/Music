@@ -72,9 +72,15 @@ class Load {
     }
 
 
-    static void Updating(){
+    static void UpdateFolders(){
         Folders.clear();
+    }
+
+    static void UpdatePlayList(){
         PlayList.clear();
+    }
+
+    static void UpdateFavourite(){
         Favourite.clear();
     }
 
