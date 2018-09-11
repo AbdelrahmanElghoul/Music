@@ -7,14 +7,12 @@ import java.util.List;
 
  class Save{
 
-    private final Context context;
-
+     private SharedPreferences sharedPreference;
     Save(Context context) {
-        this.context = context;
+         sharedPreference=context.getSharedPreferences(String.valueOf( R.string.app_name ),Context.MODE_PRIVATE );
     }
 
     void Folders(List<AudioFile> data){
-        SharedPreferences sharedPreference=context.getSharedPreferences(String.valueOf( R.string.app_name ),Context.MODE_PRIVATE );
         SharedPreferences.Editor editor=sharedPreference.edit();
         Gson gson=new Gson();
         String json=gson.toJson( data );
@@ -23,8 +21,7 @@ import java.util.List;
         editor.apply();
     }
     void PlayList(List<AudioFile> data) {
-        SharedPreferences sharedPreference = context.getSharedPreferences( String.valueOf( R.string.app_name ), Context.MODE_PRIVATE );
-        SharedPreferences.Editor editor = sharedPreference.edit();
+       SharedPreferences.Editor editor = sharedPreference.edit();
         Gson gson = new Gson();
         String json = gson.toJson( data );
 
@@ -32,12 +29,10 @@ import java.util.List;
         editor.apply();
     }
     void Favourite(List<String> data) {
-        SharedPreferences sharedPreference = context.getSharedPreferences( String.valueOf( R.string.app_name ), Context.MODE_PRIVATE );
-        SharedPreferences.Editor editor = sharedPreference.edit();
+     SharedPreferences.Editor editor = sharedPreference.edit();
         Gson gson = new Gson();
         String json = gson.toJson( data );
 
-        //  Favourite = data;
         editor.putString( "Favourite", json );
         editor.apply();
     }

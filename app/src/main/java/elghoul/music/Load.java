@@ -73,9 +73,9 @@ class Load {
 
 
     static void Updating(){
-        Folders=new ArrayList<>(  );
-        PlayList=new ArrayList<>(  );
-        Favourite=new ArrayList<>(  );
+        Folders.clear();
+        PlayList.clear();
+        Favourite.clear();
     }
 
 }
