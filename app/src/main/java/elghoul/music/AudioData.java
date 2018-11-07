@@ -7,6 +7,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import elghoul.music.DataBase.Save;
+
 public class AudioData{
 
     private List<AudioFile> File;
@@ -37,8 +39,7 @@ public class AudioData{
             chooser.setOnSelectListener(new StorageChooser.OnSelectListener() {
                 @Override
                 public void onSelect(String path) {
-                    Filter( path );
-                    new Save( activity ).Folders( getFile() );
+                    Filter( path );new Save( activity ).Folders( getFile() );
                     Log.e( "Size", String.valueOf( getFile().size() ) );
 
                 }

@@ -14,11 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import elghoul.music.Adapter.FoldersAdapter;
+import elghoul.music.Adapter.IconsAdapter;
+import elghoul.music.DataBase.Load;
+
 public class Folders_Frag extends Fragment {
 
     FragmentStarter fragment;
-    RecyclerView recyclerView;
-    myPlayer player;
+    RecyclerView recyclerFolder,recyclerPlayList;
+    mPlayer player;
 
     @Nullable
     @Override
@@ -30,13 +34,14 @@ public class Folders_Frag extends Fragment {
     public void onAttach(Context context) {
         super.onAttach( context );
         fragment = (FragmentStarter) context;
-        player=(myPlayer)context;
+        player=(mPlayer)context;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated( savedInstanceState );
-        recyclerView=getActivity().findViewById( R.id.RecyclerView );
+        recyclerFolder=getActivity().findViewById( R.id.RecyclerFolders );
+        recyclerPlayList=getActivity().findViewById( R.id.RecyclerPlayList );
 
 
 try {
@@ -49,10 +54,10 @@ try {
                 ) );
                 break;
             case "folders":
-                Folders( new FoldersAdapter( getActivity(),Load.Folders(getContext()), player ) );
+                Folders( new FoldersAdapter( getActivity(), Load.Folders(getContext()), player ) );
                 break;
             default:
-                Toast.makeText( getContext(), "Error Occured", Toast.LENGTH_SHORT ).show();
+                Toast.makeText( getContext(), "Error Occurred", Toast.LENGTH_SHORT ).show();
         }
     }catch (Exception e){
         Log.e("Error",e.getMessage());
@@ -62,20 +67,17 @@ try {
 
 }
 
-    private void Icons(IconsAdapter iconsAdapter){
-
-        recyclerView.setHasFixedSize( true );
-        recyclerView.setLayoutManager( new GridLayoutManager( getActivity(),getResources().obtainTypedArray( R.array.FoldersIcon ).length() ) );
-        recyclerView.setAdapter( iconsAdapter );
-
-
+    private void Icons(IconsAdapter iconsAdapter) {
+        recyclerFolder.setHasFixedSize( true );
+        recyclerFolder.setLayoutManager( new GridLayoutManager( getActivity(),getResources().obtainTypedArray( R.array.FoldersIcon ).length() ) );
+        recyclerFolder.setAdapter( iconsAdapter );
     }
 
     private void Folders(FoldersAdapter foldersAdapter){
 
-        recyclerView.setHasFixedSize( true );
-        recyclerView.setLayoutManager( new LinearLayoutManager( getActivity() ) );
-        recyclerView.setAdapter( foldersAdapter );
+        recyclerFolder.setHasFixedSize( true );
+        recyclerFolder.setLayoutManager( new LinearLayoutManager( getActivity() ) );
+        recyclerFolder.setAdapter( foldersAdapter );
         }
 
  }
